@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latviešu rakstu dizaina ģenerators</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .grid-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(20, 20px);
+            grid-template-rows: repeat(20, 20px);
+            gap: 1px;
+            background-color: #ccc;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .cell {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e8;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .color-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .color-box {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #333;
+            border-radius: 3px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Latviešu rakstu dizaina ģenerators</h1>
+
+        <form id="designForm">
+            <div class="form-group">
+                <label for="fullName">Pilns vārds:</label>
+                <input type="text" id="fullName" placeholder="Ievadi savu pilno vārdu (piemēram, Tīna Bērziņa)" required>
+            </div>
+
+            <div class="form-group">
+                <label for="birthdate">Dzimšanas datums:</label>
+                <input type="date" id="birthdate" required>
+            </div>
+
+            <button type="submit">Ģenerēt dizainu</button>
+        </form>
+
+        <div class="grid-container">
+            <div class="grid" id="designGrid"></div>
+        </div>
+
+        <div class="info" id="info" style="display: none;">
+            <div id="calculationInfo"></div>
+            <div class="color-info">
+                <div>
+                    <strong>Galvenā krāsa:</strong>
+                    <span class="color-box" id="mainColorBox"></span>
+                    <span id="mainColorName"></span>
+                </div>
+                <div>
+                    <strong>Fona krāsa:</strong>
+                    <span class="color-box" id="bgColorBox"></span>
+                    <span id="bgColorName"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const letterToNumber = {
+            'A': 1, 'Ā': 2, 'B': 3, 'C': 4, 'Č': 5, 'D': 6, 'E': 7, 'Ē': 8, 'F': 9,
+            'G': 1, 'Ģ': 2, 'H': 3, 'I': 4, 'Ī': 5, 'J': 6, 'K': 7, 'Ķ': 8, 'L': 9,
+            'Ļ': 1, 'M': 2, 'N': 3, 'Ņ': 4, 'O': 5, 'P': 6, 'R': 7, 'S': 8, 'Š': 9,
+            'T': 1, 'U': 2, 'Ū': 3, 'V': 4, 'Z': 5, 'Ž': 6
+        };
+
+        const numberToColor = {
+            1: { name: 'Sarkans', hex: '#FF0000' },
+            2: { name: 'Oranžs', hex: '#FFA500' },
+            3: { name: 'Dzeltens', hex: '#FFFF00' },
+            4: { name: 'Zaļš', hex: '#008000' },
+            5: { name: 'Gaiši zils', hex: '#87CEEB' },
+            6: { name: 'Tumši zils', hex: '#4B0082' },
+            7: { name: 'Violets', hex: '#800080' },
+            8: { name: 'Rozā', hex: '#FFC0CB' },
+            9: { name: 'Zelts', hex: '#FFD700' }
+        };
+
+        function extractUniqueBirthdayDigits(dateStr) {
+            const digits = dateStr.replace(/\D/g, '').split('');
+            const unique = [];
+            const seen = new Set();
+
+            for (const digit of digits) {
+                if (!seen.has(digit)) {
+                    unique.push(parseInt(digit));
+                    seen.add(digit);
+                }
+            }
+            return unique;
+        }
+
+        function sumToSingleDigit(num) {
+            while (num >= 10) {
+                num = num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+            }
+            return num;
+        }
+
+        function calculateBirthdayColor(dateStr) {
+            const allDigits = dateStr.replace(/\D/g, '').split('').map(d => parseInt(d));
+            const sum = allDigits.reduce((total, digit) => total + digit, 0);
+            return sumToSingleDigit(sum);
+        }
+
+        function calculateNameColor(name) {
+            const upperName = name.toUpperCase().replace(/\s/g, '');
+            let sum = 0;
+
+            for (const char of upperName) {
+                if (letterToNumber[char]) {
+                    sum += letterToNumber[char];
+                }
+            }
+
+            return sumToSingleDigit(sum);
+        }
+
+        function generateGrid(birthdayDigits, mainColorNum, bgColorNum) {
+            const grid = document.getElementById('designGrid');
+            grid.innerHTML = '';
+
+            const mainColor = numberToColor[mainColorNum];
+            const bgColor = numberToColor[bgColorNum];
+
+            for (let row = 0; row < 20; row++) {
+                for (let col = 0; col < 20; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+
+                    let gridRow = row;
+                    let gridCol = col;
+
+                    if (row >= 10) gridRow = 19 - row;
+                    if (col >= 10) gridCol = 19 - col;
+
+                    const digit = (gridRow * gridCol) % 10;
+                    cell.textContent = digit;
+
+                    if (birthdayDigits.includes(digit)) {
+                        cell.style.backgroundColor = mainColor.hex;
+                    } else {
+                        cell.style.backgroundColor = bgColor.hex;
+                    }
+
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        document.getElementById('designForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const birthdate = document.getElementById('birthdate').value;
+
+            if (!fullName || !birthdate) {
+                alert('Lūdzu, aizpildiet abus laukus');
+                return;
+            }
+
+            const birthdayDigits = extractUniqueBirthdayDigits(birthdate);
+            const mainColorNum = calculateBirthdayColor(birthdate);
+            const bgColorNum = calculateNameColor(fullName);
+
+            const mainColor = numberToColor[mainColorNum];
+            const bgColor = numberToColor[bgColorNum];
+
+            generateGrid(birthdayDigits, mainColorNum, bgColorNum);
+
+            document.getElementById('calculationInfo').innerHTML = `
+                <strong>${fullName}</strong><br>
+                Dzimšanas datums: ${birthdate}<br>
+                Dzimšanas dienas cipari: [${birthdayDigits.join(', ')}]<br>
+                Galvenās krāsas numurs: ${mainColorNum}<br>
+                Fona krāsas numurs: ${bgColorNum}
+            `;
+
+            document.getElementById('mainColorBox').style.backgroundColor = mainColor.hex;
+            document.getElementById('mainColorName').textContent = mainColor.name;
+            document.getElementById('bgColorBox').style.backgroundColor = bgColor.hex;
+            document.getElementById('bgColorName').textContent = bgColor.name;
+
+            document.getElementById('info').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
