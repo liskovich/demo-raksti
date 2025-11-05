@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radīt Rakstu - Latviešu Simbolu Mantojums</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            color: #333;
+            background-image: url('../assets/bg_white_forest.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #1b4d2f;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid #1b4d2f;
+        }
+
+        .back-button:hover {
+            background-color: #fff;
+            color: #1b4d2f;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+        }
+
+        .language-switcher button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #d4af37;
+            background-color: #d4af37;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button:hover,
+        .language-switcher button.active {
+            background-color: #fff;
+            color: #d4af37;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+        }
+
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #2c4a3e;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .pattern {
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .pattern img {
+            height: clamp(40px, 10vw, 60px);
+            width: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        /* Generator Section */
+        .generator-section {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #2c4a3e;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Georgia', serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #2c4a3e;
+        }
+
+        .generate-button {
+            width: 100%;
+            padding: 18px 50px;
+            background-color: #1b4d2f;
+            color: #fff;
+            border: 2px solid #1b4d2f;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .generate-button:hover {
+            background-color: #fff;
+            color: #1b4d2f;
+        }
+
+        /* Canvas Section */
+        .canvas-section {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 40px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .canvas-section.hidden {
+            display: none;
+        }
+
+        /* Catalog Section */
+        .catalog-section {
+            margin-top: 60px;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .catalog-section.hidden {
+            display: none;
+        }
+
+        .catalog-title {
+            font-size: 28px;
+            color: #2c4a3e;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .catalog-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+        }
+
+        .catalog-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .catalog-item-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .catalog-item-content {
+            position: relative;
+            width: 100%;
+        }
+
+        .catalog-item img.product-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .catalog-pattern-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        .canvas-wrapper {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #myCanvas {
+            border: 3px solid #2c4a3e;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(44, 74, 62, 0.3);
+            max-width: 100%;
+            height: auto;
+        }
+
+
+        /* Color Controls */
+        .color-controls {
+            grid-column: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .color-control {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .color-control label {
+            font-size: 16px;
+            color: #2c4a3e;
+            font-weight: bold;
+        }
+
+        .color-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #2c4a3e;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
+        .color-control select {
+            flex: 1;
+            padding: 10px;
+            font-size: 15px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Georgia', serif;
+            background-color: #fff;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .color-control select:focus {
+            outline: none;
+            border-color: #2c4a3e;
+        }
+
+        .color-control select:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            background-color: #f5f5f5;
+        }
+
+        .color-preview.disabled {
+            opacity: 0.3;
+            background-color: #e0e0e0 !important;
+        }
+
+        /* Mobile-First Responsive Design */
+
+        /* Base styles optimized for mobile */
+        .header {
+            padding: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .back-button {
+            padding: 12px 20px;
+            font-size: 13px;
+            min-height: 44px;
+        }
+
+        .language-switcher button {
+            width: 44px;
+            height: 44px;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 20px 15px;
+        }
+
+        .page-title {
+            font-size: clamp(22px, 5vw, 36px);
+            letter-spacing: clamp(1px, 0.3vw, 2px);
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
+        .page-subtitle {
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        .generator-section {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: clamp(20px, 4vw, 24px);
+        }
+
+        .input-group label {
+            font-size: clamp(14px, 2.5vw, 16px);
+        }
+
+        .input-group input {
+            padding: 14px;
+            font-size: clamp(14px, 2.5vw, 16px);
+        }
+
+        .generate-button {
+            padding: 16px 30px;
+            font-size: clamp(14px, 2.5vw, 16px);
+            min-height: 50px;
+        }
+
+
+        /* Canvas section - mobile layout */
+        .canvas-section {
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .canvas-wrapper {
+            grid-column: 1;
+            order: 2;
+        }
+
+        .color-controls {
+            grid-column: 1;
+            order: 1;
+            gap: 25px;
+        }
+
+        .color-control label {
+            font-size: clamp(14px, 2.5vw, 16px);
+        }
+
+        .color-control select {
+            padding: 12px;
+            font-size: clamp(14px, 2.5vw, 15px);
+        }
+
+        .color-preview {
+            width: 44px;
+            height: 44px;
+        }
+
+        #myCanvas {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border: 2px solid #2c4a3e;
+        }
+
+        /* Catalog section - mobile */
+        .catalog-section {
+            margin-top: 40px;
+            padding: 25px 15px;
+            border-radius: 8px;
+        }
+
+        .catalog-title {
+            font-size: clamp(22px, 4.5vw, 28px);
+            margin-bottom: 25px;
+        }
+
+        .catalog-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .catalog-item {
+            border-radius: 8px;
+        }
+
+        .catalog-pattern-overlay {
+            width: 80px;
+            height: 80px;
+        }
+
+        /* Small Mobile (480px and up) */
+        @media (min-width: 480px) {
+            .header {
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .back-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .language-switcher button {
+                width: 48px;
+                height: 48px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .generator-section {
+                padding: 30px;
+            }
+
+            .generate-button {
+                padding: 18px 50px;
+                min-height: 54px;
+            }
+
+            .canvas-section {
+                gap: 30px;
+                margin-top: 35px;
+            }
+
+            .color-controls {
+                gap: 30px;
+            }
+
+            #myCanvas {
+                max-width: 450px;
+            }
+
+            .catalog-section {
+                padding: 30px 20px;
+            }
+
+            .catalog-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 25px;
+            }
+
+            .catalog-pattern-overlay {
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        /* Tablet (768px and up) */
+        @media (min-width: 768px) {
+            .header {
+                padding: 30px;
+                flex-wrap: nowrap;
+            }
+
+            .language-switcher button {
+                width: 50px;
+                height: 50px;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .page-subtitle {
+                margin-bottom: 40px;
+            }
+
+            .generator-section {
+                padding: 40px;
+                border-radius: 10px;
+            }
+
+            .canvas-section {
+                grid-template-columns: 280px 1fr;
+                gap: 60px;
+                margin-top: 40px;
+            }
+
+            .canvas-wrapper {
+                grid-column: 2;
+                order: initial;
+            }
+
+            .color-controls {
+                grid-column: 1;
+                order: initial;
+                gap: 40px;
+            }
+
+            .color-preview {
+                width: 40px;
+                height: 40px;
+            }
+
+            #myCanvas {
+                max-width: 100%;
+                border: 3px solid #2c4a3e;
+            }
+
+            .catalog-section {
+                margin-top: 60px;
+                padding: 40px;
+                border-radius: 10px;
+            }
+
+            .catalog-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+            }
+
+            .catalog-pattern-overlay {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* Desktop (1024px and up) */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+        }
+
+        /* Touch-friendly elements */
+        button, a, select {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group input {
+            min-height: 44px;
+        }
+
+        /* Prevent horizontal overflow */
+        body {
+            overflow-x: hidden;
+        }
+
+        .container, .generator-section, .catalog-section {
+            max-width: 100%;
+        }
+
+        /* Better form input visibility on mobile */
+        .input-group input:focus {
+            outline: none;
+            border-color: #2c4a3e;
+            box-shadow: 0 0 0 3px rgba(44, 74, 62, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <a href="../landing/index.html" class="back-button">← ATPAKAĻ</a>
+        <div class="language-switcher">
+            <button class="active">LV</button>
+            <button>EN</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="page-title">RADĪT MANU RAKSTU</h1>
+        <p class="page-subtitle">
+            Ievadi savu vārdu un dzimšanas dienu, lai radītu unikālu latvisko rakstu,<br>
+            kas atspoguļo tavu personīgo enerģiju un identitāti.
+        </p>
+
+        <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+
+        <!-- Generator Section -->
+        <div class="generator-section">
+            <!-- Form Section -->
+            <div class="form-section">
+                <h2 class="section-title">Tava informācija</h2>
+                <div class="input-group">
+                    <label for="name">Vārds un uzvārds</label>
+                    <input type="text" id="name" placeholder="Piemēram: Anna Bērziņa">
+                </div>
+                <div class="input-group">
+                    <label for="birthday">Dzimšanas datums</label>
+                    <input type="date" id="birthday">
+                </div>
+                <button class="generate-button" onclick="generate()">RADĪT RAKSTU</button>
+            </div>
+
+            <!-- Canvas Section -->
+            <div class="canvas-section hidden" id="canvasSection">
+                <div class="color-controls">
+                    <div class="color-control">
+                        <label for="mainColorSelect">Raksta krāsa</label>
+                        <div class="color-select-wrapper">
+                            <div class="color-preview" id="mainColorPreview"></div>
+                            <select id="mainColorSelect"></select>
+                        </div>
+                    </div>
+                    <div class="color-control">
+                        <label for="bgColorSelect">Fona krāsa</label>
+                        <div class="color-select-wrapper">
+                            <div class="color-preview" id="bgColorPreview"></div>
+                            <select id="bgColorSelect"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="myCanvas" width="500" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Catalog Section -->
+        <div class="catalog-section hidden" id="catalogSection">
+            <h2 class="section-title">Apskati savu rakstu uz produktiem</h2>
+            <div class="catalog-grid" id="catalogGrid">
+                <!-- Catalog items will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

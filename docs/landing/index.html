@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latviešu Simbolu Mantojums</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Menu Button */
+        .menu-button {
+            position: fixed;
+            background-color: #d4af37;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: #b8962a;
+        }
+
+        .menu-button span {
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-button.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-button.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        /* Sidebar Menu */
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 999;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-menu.active {
+            left: 0;
+        }
+
+        .sidebar-menu nav ul {
+            list-style: none;
+        }
+
+        .sidebar-menu nav ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar-menu nav ul li a:hover {
+            color: #d4af37;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .language-switcher button {
+            border: 2px solid #d4af37;
+            background-color: #d4af37;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button:hover,
+        .language-switcher button.active {
+            background-color: #fff;
+            color: #d4af37;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background-image: url('../assets/bg_white_forest.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.5));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            margin-bottom: 20px;
+            letter-spacing: clamp(1px, 0.5vw, 3px);
+            color: #2c4a3e;
+        }
+
+        .hero p {
+            line-height: 1.8;
+            color: #3d5a4d;
+            margin-bottom: 10px;
+        }
+
+        /* Decorative Pattern */
+        .pattern {
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .pattern img {
+            height: clamp(40px, 10vw, 60px);
+            width: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        /* Section Styling */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .section-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .section-title {
+            margin-bottom: 30px;
+            color: #2c4a3e;
+        }
+
+        .section-text {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Senču gudrība Section */
+        #sencu-gudriba {
+            background-image: url('../assets/bg_white_forest.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        #sencu-gudriba::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        #sencu-gudriba .section-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Color Icons */
+        .color-meanings {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-icon img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .color-icon.red img {
+            filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+        }
+
+        .color-icon.blue img {
+            filter: invert(36%) sepia(94%) saturate(1661%) hue-rotate(191deg) brightness(91%) contrast(88%);
+        }
+
+        .color-icon.green img {
+            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(88%) contrast(119%);
+        }
+
+        .color-icon.orange img {
+            filter: invert(52%) sepia(98%) saturate(3207%) hue-rotate(13deg) brightness(101%) contrast(101%);
+        }
+
+        .color-icon.yellow img {
+            filter: invert(79%) sepia(61%) saturate(475%) hue-rotate(1deg) brightness(96%) contrast(97%);
+        }
+
+        .color-text {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Personīgā raksta Section */
+        #personiga-raksta {
+            background-color: #f5f5f5;
+        }
+
+        /* Krāsu valoda Section */
+        #krasu-valoda {
+            background-color: #fff;
+        }
+
+        /* Atklāj savu simbolu Section - Sticky Footer */
+        #atklaj-simbolu {
+            background-image: url('../assets/bg_green_forest.jpg');
+            background-size: cover;
+            background-position: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            min-height: auto;
+            height: 80px;
+            padding: 0;
+            overflow: hidden;
+            transition: height 0.6s ease-in-out, padding 0.6s ease-in-out;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        #atklaj-simbolu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9));
+        }
+
+        #atklaj-simbolu.expanded {
+            height: 100vh;
+            min-height: 100vh;
+            padding: 100px 20px;
+        }
+
+        #atklaj-simbolu .section-content {
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.6s ease 0.2s;
+        }
+
+        #atklaj-simbolu.expanded .section-content {
+            opacity: 1;
+        }
+
+        /* Collapsed Footer Content */
+        .footer-collapsed {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        #atklaj-simbolu.expanded .footer-collapsed {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .footer-collapsed h3 {
+            font-size: 20px;
+            color: #2c4a3e;
+            margin: 0;
+        }
+
+        .footer-collapsed .cta-button-small {
+            display: inline-block;
+            padding: 10px 30px;
+            background-color: #1b4d2f;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid #1b4d2f;
+            white-space: nowrap;
+        }
+
+        .footer-collapsed .cta-button-small:hover {
+            background-color: #fff;
+            color: #1b4d2f;
+        }
+
+        /* Main content padding to account for sticky footer */
+        body {
+            padding-bottom: 80px;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 18px 50px;
+            background-color: #1b4d2f;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid #1b4d2f;
+        }
+
+        .cta-button:hover {
+            background-color: #fff;
+            color: #1b4d2f;
+        }
+
+        /* Par mums Section */
+        #par-mums {
+            background-color: #f5f5f5;
+        }
+
+        /* Kontakti Section */
+        #kontakti {
+            background-color: #fff;
+            min-height: 50vh;
+        }
+
+        /* Mobile-First Responsive Design */
+
+        /* Base styles are mobile-first */
+        .menu-button,
+        .language-switcher button {
+            width: 44px;
+            height: 44px;
+            font-size: 14px;
+        }
+
+        .menu-button {
+            top: 15px;
+            left: 15px;
+        }
+
+        .language-switcher {
+            top: 15px;
+            right: 15px;
+        }
+
+        .hero h1 {
+            font-size: clamp(24px, 5vw, 48px);
+        }
+
+        .hero p {
+            font-size: clamp(14px, 3vw, 18px);
+        }
+
+        .section-title {
+            font-size: clamp(24px, 4vw, 36px);
+        }
+
+        .section-text {
+            font-size: clamp(14px, 2.5vw, 16px);
+        }
+
+        section {
+            padding: 60px 15px;
+        }
+
+        .sidebar-menu {
+            width: 280px;
+            left: -280px;
+            padding: 80px 20px 30px;
+        }
+
+        /* Small Mobile (480px and up) */
+        @media (min-width: 480px) {
+            .menu-button,
+            .language-switcher button {
+                width: 48px;
+                height: 48px;
+            }
+
+            section {
+                padding: 80px 20px;
+            }
+
+            .sidebar-menu {
+                width: 300px;
+                left: -300px;
+                padding: 100px 30px 30px;
+            }
+        }
+
+        /* Tablet (768px and up) */
+        @media (min-width: 768px) {
+            .menu-button {
+                top: 30px;
+                left: 30px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .language-switcher {
+                top: 30px;
+                right: 30px;
+            }
+
+            .language-switcher button {
+                width: 50px;
+                height: 50px;
+            }
+
+            section {
+                padding: 100px 20px;
+            }
+
+            .color-meanings {
+                gap: 40px;
+            }
+
+            .footer-collapsed {
+                gap: 30px;
+            }
+
+            .footer-collapsed h3 {
+                font-size: 20px;
+            }
+        }
+
+        /* Desktop (1024px and up) */
+        @media (min-width: 1024px) {
+            .hero {
+                padding: 80px 40px;
+            }
+        }
+
+        /* Improve touch targets for all interactive elements */
+        a, button {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-menu nav ul li a {
+            padding: 8px 0;
+            display: block;
+        }
+
+        /* Prevent overflow on small screens */
+        .hero-content,
+        .section-content {
+            max-width: 100%;
+            padding: 0 10px;
+        }
+
+        @media (min-width: 768px) {
+            .hero-content,
+            .section-content {
+                padding: 0;
+            }
+        }
+
+        /* Responsive footer */
+        .footer-collapsed {
+            flex-direction: column;
+            gap: 15px;
+            padding: 0 15px;
+        }
+
+        @media (min-width: 480px) {
+            .footer-collapsed {
+                flex-direction: row;
+                gap: 20px;
+            }
+        }
+
+        .footer-collapsed h3 {
+            font-size: 16px;
+        }
+
+        .footer-collapsed .cta-button-small {
+            padding: 12px 20px;
+            font-size: 13px;
+            white-space: normal;
+            text-align: center;
+        }
+
+        @media (min-width: 480px) {
+            .footer-collapsed .cta-button-small {
+                padding: 10px 30px;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+        }
+
+        /* Better spacing for color items on mobile */
+        .color-meanings {
+            gap: 15px;
+            padding: 0 10px;
+        }
+
+        .color-item {
+            min-width: 80px;
+        }
+
+        .color-text {
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (min-width: 480px) {
+            .color-text {
+                font-size: 14px;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Button -->
+    <button class="menu-button" id="menuButton">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar-menu" id="sidebarMenu">
+        <nav>
+            <ul>
+                <li><a href="#sencu-gudriba">Senču gudrība</a></li>
+                <li><a href="#personiga-raksta">Personīgā raksta nozīme</a></li>
+                <li><a href="#krasu-valoda">Krāsu un skaitļu nozīme</a></li>
+                <li><a href="#atklaj-simbolu">Atklāj savu simbolu</a></li>
+                <li><a href="#par-mums">Par mums</a></li>
+                <li><a href="#kontakti">Kontakti</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="active">LV</button>
+        <button>EN</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>LATVIEŠU SIMBOLU MANTOJUMS</h1>
+            <p>Katrā rakstā slēpjas stāsts. Katrā krāsā dzīvo senču gudrība.</p>
+            <p>Atklāj savu personīgo simbolu, kas nes tavā vārdā un dzimšanas dienā.</p>
+            <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+        </div>
+    </section>
+
+    <!-- Senču gudrība Section -->
+    <section id="sencu-gudriba">
+        <div class="section-content">
+            <h2 class="section-title">Senču gudrība mūsdienu pasaulē</h2>
+            <p class="section-text">
+                Jau gadsimtiem latviešu tautas meistari ir pārvērtuši skaitļus un burtus par skaistiem, simboliskiem rakstiem.
+                Šie raksti nav tikai rotājums - tie ir dziļa sakarība starp cilvēku un dabas spēkiem, starp personības būtību un kosmisko harmoniju.
+            </p>
+            <p class="section-text">Katra krāsa nes sevī senās nozīmes:</p>
+            <div class="color-meanings">
+                <div class="color-item">
+                    <div class="color-icon red">
+                        <img src="../assets/star_cropped_only.svg" alt="star">
+                    </div>
+                    <span class="color-text">sarkans simbolizē dzīvības spēku</span>
+                </div>
+                <div class="color-item">
+                    <div class="color-icon blue">
+                        <img src="../assets/star_cropped_only.svg" alt="star">
+                    </div>
+                    <span class="color-text">zils - debess bezgalību</span>
+                </div>
+                <div class="color-item">
+                    <div class="color-icon green">
+                        <img src="../assets/star_cropped_only.svg" alt="star">
+                    </div>
+                    <span class="color-text">zaļš - zemes auglību</span>
+                </div>
+            </div>
+            <p class="section-text">
+                Tavs vārds un dzimšanas diena nav nejaušība - tās ir atslēgas, kas atver durvis uz tavu unikālo simbolu pasauli.
+            </p>
+            <p class="section-text">
+                <a href="sencu-gudriba.html" style="color: #1b4d2f; font-weight: bold; text-decoration: underline;">Uzzināt vairāk →</a>
+            </p>
+            <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+        </div>
+    </section>
+
+    <!-- Personīgā raksta nozīme Section -->
+    <section id="personiga-raksta">
+        <div class="section-content">
+            <h2 class="section-title">Personīgā raksta nozīme</h2>
+            <p class="section-text">
+                Katrs cilvēks ir unikāls, un tāpēc arī viņa simboliskais raksts ir nepatkārtojams.
+            </p>
+            <p class="section-text">
+                Tavs raksts atspoguļo ne tikai tavu ārējo identitāti, bet arī iekšējo būtību - tavus spēkus, talantus un dzīves ceļa virzienu.
+            </p>
+            <p class="section-text">
+                Senajos laikos šādus rakstus izmantoja kā aizsargājošus simbolus, kas nesa veiksmi un stiprināja dvēseles spēku.
+                Mūsdienās tie kļūst par mūsu personīgo zīmolu digitālajā laikmetā, saglabājot dziļo saikni ar latvisko identitāti.
+            </p>
+            <p class="section-text">
+                <a href="personiga-raksta.html" style="color: #1b4d2f; font-weight: bold; text-decoration: underline;">Uzzināt vairāk →</a>
+            </p>
+            <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+        </div>
+    </section>
+
+    <!-- Krāsu valoda un skaitļu noslēpums Section -->
+    <section id="krasu-valoda">
+        <div class="section-content">
+            <h2 class="section-title">Krāsu valoda un skaitļu noslēpums</h2>
+            <p class="section-text">
+                Deviņas krāsas, deviņi skaitļi - šī nav nejaušība.<br>
+                Deviņnieks latviešu kultūrā simbolizē pilnību un harmoniju.
+            </p>
+            <p class="section-text">Katra krāsa rezonē ar konkrētām enerģijām:</p>
+            <div class="color-meanings">
+                <div class="color-item">
+                    <div class="color-icon red">
+                        <img src="../assets/star_cropped_only.svg" alt="star">
+                    </div>
+                    <span class="color-text">sarkans dod spēku</span>
+                </div>
+                <div class="color-item">
+                    <div class="color-icon orange">
+                        <img src="../assets/star_cropped_only.svg" alt="star">
+                    </div>
+                    <span class="color-text">oranžs iedvesmo radošumam</span>
+                </div>
+                <div class="color-item">
+                    <div class="color-icon yellow">
+                        <img src="../assets/star_cropped_only.svg" alt="star">
+                    </div>
+                    <span class="color-text">dzeltens nes priecīgumu</span>
+                </div>
+            </div>
+            <p class="section-text">
+                Tavs vārds, pārvērtots skaitļos, atklāj tavu iekšējo krāsu spektru.<br>
+                Dzimšanas datums nosaka galveno enerģiju.<br>
+                Kopā tie rada unikālu rakstu, kas ir tikai un vienīgi tavs - kā pirkstu nospiedums dvēseles pasaulē.
+            </p>
+            <p class="section-text">
+                <a href="krasu-valoda.html" style="color: #1b4d2f; font-weight: bold; text-decoration: underline;">Uzzināt vairāk →</a>
+            </p>
+            <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+        </div>
+    </section>
+
+    <!-- Atklāj savu simbolu Section - Sticky Footer -->
+    <section id="atklaj-simbolu">
+        <!-- Collapsed state (visible when not at bottom) -->
+        <div class="footer-collapsed">
+            <h3>Atklāj savu simbolu</h3>
+            <a href="../gen/index.html" class="cta-button-small" id="expandFooter">RADĪT MANU RAKSTU</a>
+        </div>
+
+        <!-- Expanded state (visible when at bottom or clicked) -->
+        <div class="section-content">
+            <h2 class="section-title">Atklāj savu simbolu</h2>
+            <p class="section-text">
+                Pienācis laiks atklāt savu personīgo latvisko rakstu.
+            </p>
+            <p class="section-text">
+                Ievadi savu vārdu un dzimšanas dienu, un ļauj senču gudrībai radīt tavu unikālo simbolu.
+            </p>
+            <a href="../gen/index.html" class="cta-button">RADĪT MANU RAKSTU</a>
+        </div>
+    </section>
+
+    <!-- Par mums Section -->
+    <section id="par-mums">
+        <div class="section-content">
+            <h2 class="section-title">Par mums</h2>
+            <p class="section-text">
+                Mēs esam komanda, kas tic latviešu kultūras mantojuma saglabāšanai un popularizēšanai mūsdienu pasaulē.
+            </p>
+            <p class="section-text">
+                Mūsu mērķis ir padarīt senču gudrību pieejamu ikvienam, kurš vēlas atklāt savu unikālo saistību ar latvisko identitāti.
+            </p>
+        </div>
+    </section>
+
+    <!-- Kontakti Section -->
+    <section id="kontakti">
+        <div class="section-content">
+            <h2 class="section-title">Kontakti</h2>
+            <p class="section-text">
+                Ja jums ir jautājumi vai ierosinājumi, lūdzu, sazinieties ar mums.
+            </p>
+            <p class="section-text">
+                E-pasts: info@latviesusimboli.lv<br>
+                Tālrunis: +371 12345678
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Menu Toggle
+        const menuButton = document.getElementById('menuButton');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+
+        menuButton.addEventListener('click', () => {
+            menuButton.classList.toggle('active');
+            sidebarMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        const menuLinks = sidebarMenu.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                menuButton.classList.remove('active');
+                sidebarMenu.classList.remove('active');
+
+                // Special handling for "Atklāj savu simbolu" link
+                if (link.getAttribute('href') === '#atklaj-simbolu') {
+                    e.preventDefault();
+                    const footer = document.getElementById('atklaj-simbolu');
+                    footer.classList.add('expanded');
+                    footer.dataset.manualExpand = 'true';
+                }
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuButton.contains(e.target) && !sidebarMenu.contains(e.target)) {
+                menuButton.classList.remove('active');
+                sidebarMenu.classList.remove('active');
+            }
+        });
+
+        // Language Switcher
+        const langButtons = document.querySelectorAll('.language-switcher button');
+        langButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                langButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // Here you would implement language switching logic
+                console.log('Language switched to:', button.textContent);
+            });
+        });
+
+        // Smooth scroll is handled by CSS scroll-behavior
+        // Additional scroll effects can be added here if needed
+
+        // Parallax effect for background images (optional enhancement)
+        let parallaxTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!parallaxTicking) {
+                requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    const parallaxSections = document.querySelectorAll('.hero, #sencu-gudriba');
+
+                    parallaxSections.forEach(section => {
+                        const speed = 0.5;
+                        section.style.backgroundPositionY = -(scrolled * speed) + 'px';
+                    });
+
+                    parallaxTicking = false;
+                });
+                parallaxTicking = true;
+            }
+        }, { passive: true });
+
+        // Sticky Footer Expansion
+        const stickyFooter = document.getElementById('atklaj-simbolu');
+        const expandFooterBtn = document.getElementById('expandFooter');
+        let isFooterExpanded = false;
+
+        // Function to check if user has scrolled to the bottom
+        function checkScrollPosition() {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Calculate distance from bottom (accounting for sticky footer)
+            const distanceFromBottom = documentHeight - (scrollTop + windowHeight);
+
+            // If within 50px of bottom, expand the footer (only when truly at the bottom)
+            if (distanceFromBottom < 50 && !isFooterExpanded) {
+                stickyFooter.classList.add('expanded');
+                isFooterExpanded = true;
+            } else if (distanceFromBottom > 150 && isFooterExpanded && stickyFooter.dataset.manualExpand !== 'true') {
+                stickyFooter.classList.remove('expanded');
+                isFooterExpanded = false;
+            }
+        }
+
+        // Manual expansion when clicking the button
+        if (expandFooterBtn) {
+            expandFooterBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                stickyFooter.classList.add('expanded');
+                stickyFooter.dataset.manualExpand = 'true';
+                isFooterExpanded = true;
+            });
+        }
+
+        // Collapse footer when clicking outside of it while manually expanded
+        document.addEventListener('click', (e) => {
+            if (isFooterExpanded &&
+                stickyFooter.dataset.manualExpand === 'true' &&
+                !stickyFooter.contains(e.target)) {
+                stickyFooter.classList.remove('expanded');
+                delete stickyFooter.dataset.manualExpand;
+                isFooterExpanded = false;
+            }
+        });
+
+        // Check scroll position on scroll
+        window.addEventListener('scroll', checkScrollPosition);
+
+        // Initial check
+        checkScrollPosition();
+    </script>
+</body>
+</html>

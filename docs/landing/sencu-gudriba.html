@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senču gudrība mūsdienu pasaulē - Latviešu Simbolu Mantojums</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            color: #333;
+            background-image: url('../assets/bg_white_forest.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: -1;
+        }
+
+        .header {
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #1b4d2f;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid #1b4d2f;
+        }
+
+        .back-button:hover {
+            background-color: #fff;
+            color: #1b4d2f;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+        }
+
+        .language-switcher button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #d4af37;
+            background-color: #d4af37;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button:hover,
+        .language-switcher button.active {
+            background-color: #fff;
+            color: #d4af37;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #2c4a3e;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .pattern {
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .pattern img {
+            height: clamp(40px, 10vw, 60px);
+            width: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .content-section {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #2c4a3e;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .section-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background-color: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+
+        .highlight-box .section-text {
+            margin-bottom: 0;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        ul li {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile-First Responsive Design */
+
+        /* Base styles optimized for mobile */
+        .header {
+            padding: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .back-button {
+            padding: 12px 20px;
+            font-size: 13px;
+            min-height: 44px;
+        }
+
+        .language-switcher button {
+            width: 44px;
+            height: 44px;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 20px 15px 60px;
+        }
+
+        .page-title {
+            font-size: clamp(22px, 5vw, 36px);
+            letter-spacing: clamp(1px, 0.3vw, 2px);
+            padding: 0 10px;
+        }
+
+        .content-section {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-size: clamp(20px, 4vw, 24px);
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .section-text {
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ul li {
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+
+        /* Small Mobile (480px and up) */
+        @media (min-width: 480px) {
+            .header {
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .back-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .language-switcher button {
+                width: 48px;
+                height: 48px;
+            }
+
+            .container {
+                padding: 30px 20px 70px;
+            }
+
+            .content-section {
+                padding: 30px;
+            }
+
+            .highlight-box {
+                padding: 18px;
+            }
+        }
+
+        /* Tablet (768px and up) */
+        @media (min-width: 768px) {
+            .header {
+                padding: 30px;
+                flex-wrap: nowrap;
+            }
+
+            .language-switcher button {
+                width: 50px;
+                height: 50px;
+            }
+
+            .container {
+                padding: 40px 20px 80px;
+            }
+
+            .content-section {
+                padding: 40px;
+                border-radius: 10px;
+            }
+
+            .section-title {
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
+
+            .section-text {
+                margin-bottom: 20px;
+            }
+
+            ul {
+                margin: 20px 0;
+                padding-left: 30px;
+            }
+
+            ul li {
+                margin-bottom: 10px;
+            }
+
+            .highlight-box {
+                padding: 20px;
+                margin: 30px 0;
+                border-radius: 5px;
+            }
+        }
+
+        /* Desktop (1024px and up) */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+        }
+
+        /* Touch-friendly links */
+        a {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 0;
+        }
+
+        /* Prevent horizontal overflow */
+        body {
+            overflow-x: hidden;
+        }
+
+        .container, .content-section {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-button">← ATPAKAĻ</a>
+        <div class="language-switcher">
+            <button class="active">LV</button>
+            <button>EN</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">SENČU GUDRĪBA MŪSDIENU PASAULĒ</h1>
+
+        <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+
+        <div class="content-section">
+            <p class="section-text">
+                Jau gadsimtiem latviešu tautas meistari ir pārvērtuši skaitļus un burtus par skaistiem, simboliskiem rakstiem.
+                Šie raksti nav tikai rotājums - tie ir dziļa sakarība starp cilvēku un dabas spēkiem, starp personības būtību un kosmisko harmoniju.
+            </p>
+
+            <h2 class="section-title">Latvisko Rakstu Izcelsme</h2>
+            <p class="section-text">
+                Latviešu ornamentālie raksti ir tūkstošgadīgs mantojums, kas saglabājies tautas atmiņā un rokdarbos.
+                Šie simboli nav radušies nejauši - tie ir dziļi iesakņoti dabas novērošanā, gadskārtu ritumā un cilvēka
+                saskaņā ar apkārtējo pasauli.
+            </p>
+            <p class="section-text">
+                Senās latviešu sievietes izveidoja sarežģītas sistēmas, kā iekodēt informāciju rakstu valodā.
+                Katrs simbols, katra krāsa, katra līnija nesa savu nozīmi - aizsardzību, veiksmi, spēku vai gudrību.
+                Šīs zināšanas tika nodotas no paaudzes paaudzē, saglabājot saikni ar senčiem.
+            </p>
+
+            <h2 class="section-title">Rakstu Simboliskā Nozīme</h2>
+            <p class="section-text">
+                Tradicionālie latviešu raksti funkcionēja vairākos līmeņos:
+            </p>
+            <ul>
+                <li><strong>Aizsardzības funkcija:</strong> Raksti uz apģērba un mājās novērsa ļaunumu un slimības</li>
+                <li><strong>Identitātes marķieris:</strong> Pēc raksta varēja noteikt cilvēka izcelsmi, ģimeni un sociālo statusu</li>
+                <li><strong>Sakrālā dimensija:</strong> Raksti savienoja savu nesēju ar dabas spēkiem un dievībām</li>
+                <li><strong>Estētiskā vērtība:</strong> Skaistums un harmonija bija neatņemama rakstu daļa</li>
+            </ul>
+
+            <div class="highlight-box">
+                <p class="section-text">
+                    <strong>Vai zināji?</strong> Senās latvietes spēja no viena skatiena "nolasīt" citas sievas rakstu stāstu -
+                    no kurienes viņa nāk, cik viņai bērnu, kāds ir viņas raksturs un pat, kādas problēmas viņu māc.
+                </p>
+            </div>
+
+            <h2 class="section-title">No Senatnes uz Mūsdienām</h2>
+            <p class="section-text">
+                Mūsdienu pasaulē latviešu rakstu tradīcija piedzīvo atdzimšanu. Cilvēki atkal meklē saikni ar savām
+                saknēm, ar senču gudrību un dabisko dzīvesveidu. Personalizēti raksti kļūst par veidu, kā digitālajā
+                laikmetā saglabāt un izcelt savu unikālo latvisko identitāti.
+            </p>
+            <p class="section-text">
+                Mūsu sistēma apvieno senās zināšanas par skaitļu un burtu simboliku ar mūsdienu tehnoloģijām,
+                ļaujot katram radīt savu personīgo rakstu, kas atspoguļo viņa dzīves ceļu un iekšējo būtību.
+            </p>
+
+            <h2 class="section-title">Kā Tas Darbojas?</h2>
+            <p class="section-text">
+                Katra persona ir unikāla kombinācija no burtu vērtībām (vārds) un skaitļu enerģijām (dzimšanas datums).
+                Senā tradīcijā latviešu meistares izmantoja sarežģītas formulas, lai no šīs informācijas izveidotu
+                harmonisku rakstu kompozīciju.
+            </p>
+            <p class="section-text">
+                Mūsu rīks automatizē šo senču procesu, saglabājot tā būtību un simbolisko nozīmi. Rezultāts ir
+                pilnībā personalizēts raksts, kas ir tikpat unikāls kā pirkstu nospiedums, bet daudz nozīmīgāks
+                savā kultūras un garīgajā dimensijā.
+            </p>
+        </div>
+
+        <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+    </div>
+</body>
+</html>

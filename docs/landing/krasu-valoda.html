@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krāsu valoda un skaitļu noslēpums - Latviešu Simbolu Mantojums</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            color: #333;
+            background-image: url('../assets/bg_white_forest.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: -1;
+        }
+
+        .header {
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #1b4d2f;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid #1b4d2f;
+        }
+
+        .back-button:hover {
+            background-color: #fff;
+            color: #1b4d2f;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+        }
+
+        .language-switcher button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #d4af37;
+            background-color: #d4af37;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button:hover,
+        .language-switcher button.active {
+            background-color: #fff;
+            color: #d4af37;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #2c4a3e;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .pattern {
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .pattern img {
+            height: clamp(40px, 10vw, 60px);
+            width: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .content-section {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #2c4a3e;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .section-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background-color: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+
+        .highlight-box .section-text {
+            margin-bottom: 0;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .color-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-swatch img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .color-swatch.red img {
+            filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+        }
+
+        .color-swatch.orange img {
+            filter: invert(52%) sepia(98%) saturate(3207%) hue-rotate(13deg) brightness(101%) contrast(101%);
+        }
+
+        .color-swatch.yellow img {
+            filter: invert(79%) sepia(61%) saturate(475%) hue-rotate(1deg) brightness(96%) contrast(97%);
+        }
+
+        .color-swatch.green img {
+            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(88%) contrast(119%);
+        }
+
+        .color-swatch.light-blue img {
+            filter: invert(74%) sepia(14%) saturate(1037%) hue-rotate(161deg) brightness(94%) contrast(92%);
+        }
+
+        .color-swatch.dark-blue img {
+            filter: invert(12%) sepia(90%) saturate(4862%) hue-rotate(244deg) brightness(83%) contrast(115%);
+        }
+
+        .color-swatch.violet img {
+            filter: invert(17%) sepia(97%) saturate(5447%) hue-rotate(287deg) brightness(82%) contrast(119%);
+        }
+
+        .color-swatch.pink img {
+            filter: invert(91%) sepia(10%) saturate(828%) hue-rotate(299deg) brightness(104%) contrast(101%);
+        }
+
+        .color-swatch.gold img {
+            filter: invert(79%) sepia(18%) saturate(1611%) hue-rotate(8deg) brightness(88%) contrast(86%);
+        }
+
+        .color-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c4a3e;
+        }
+
+        .color-meaning {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        ul li {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile-First Responsive Design */
+
+        /* Base styles optimized for mobile */
+        .header {
+            padding: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .back-button {
+            padding: 12px 20px;
+            font-size: 13px;
+            min-height: 44px;
+        }
+
+        .language-switcher button {
+            width: 44px;
+            height: 44px;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 20px 15px 60px;
+        }
+
+        .page-title {
+            font-size: clamp(22px, 5vw, 36px);
+            letter-spacing: clamp(1px, 0.3vw, 2px);
+            padding: 0 10px;
+        }
+
+        .content-section {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-size: clamp(20px, 4vw, 24px);
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .section-text {
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        ul li {
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+
+        /* Color grid - mobile first */
+        .color-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .color-card {
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .color-card-header {
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .color-swatch {
+            width: 35px;
+            height: 35px;
+        }
+
+        .color-name {
+            font-size: clamp(16px, 3.5vw, 18px);
+        }
+
+        .color-meaning {
+            font-size: clamp(13px, 2.5vw, 14px);
+        }
+
+        /* Small Mobile (480px and up) */
+        @media (min-width: 480px) {
+            .header {
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .back-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .language-switcher button {
+                width: 48px;
+                height: 48px;
+            }
+
+            .container {
+                padding: 30px 20px 70px;
+            }
+
+            .content-section {
+                padding: 30px;
+            }
+
+            .highlight-box {
+                padding: 18px;
+            }
+
+            .color-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 18px;
+            }
+
+            .color-card {
+                padding: 18px;
+            }
+
+            .color-swatch {
+                width: 38px;
+                height: 38px;
+            }
+        }
+
+        /* Tablet (768px and up) */
+        @media (min-width: 768px) {
+            .header {
+                padding: 30px;
+                flex-wrap: nowrap;
+            }
+
+            .language-switcher button {
+                width: 50px;
+                height: 50px;
+            }
+
+            .container {
+                padding: 40px 20px 80px;
+            }
+
+            .content-section {
+                padding: 40px;
+                border-radius: 10px;
+            }
+
+            .section-title {
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
+
+            .section-text {
+                margin-bottom: 20px;
+            }
+
+            ul {
+                margin: 20px 0;
+                padding-left: 30px;
+            }
+
+            ul li {
+                margin-bottom: 10px;
+            }
+
+            .highlight-box {
+                padding: 20px;
+                margin: 30px 0;
+                border-radius: 5px;
+            }
+
+            .color-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin: 30px 0;
+            }
+
+            .color-card {
+                padding: 20px;
+                border-radius: 8px;
+            }
+
+            .color-card-header {
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .color-swatch {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Desktop (1024px and up) */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+        }
+
+        /* Touch-friendly links */
+        a {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 0;
+        }
+
+        /* Prevent horizontal overflow */
+        body {
+            overflow-x: hidden;
+        }
+
+        .container, .content-section {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-button">← ATPAKAĻ</a>
+        <div class="language-switcher">
+            <button class="active">LV</button>
+            <button>EN</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">KRĀSU VALODA UN SKAITĻU NOSLĒPUMS</h1>
+
+        <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+
+        <div class="content-section">
+            <p class="section-text">
+                Deviņas krāsas, deviņi skaitļi - šī nav nejaušība. Deviņnieks latviešu kultūrā simbolizē pilnību un harmoniju.
+            </p>
+
+            <h2 class="section-title">Deviņnieka Nozīme</h2>
+            <p class="section-text">
+                Skaitlis deviņi latviešu tradīcijā ir svēts un pilnīgs. Tas simbolizē:
+            </p>
+            <ul>
+                <li>Cikla pabeigšanu un jauna sākumu</li>
+                <li>Gudrības un garīgās attīstības kulmināciju</li>
+                <li>Harmoniju starp materiālo un garīgo pasauli</li>
+                <li>Visu skaitļu (1-9) enerģiju apkopojumu</li>
+            </ul>
+            <p class="section-text">
+                Tāpēc mūsu rakstu sistēma izmanto tieši deviņas krāsas - katru ar savu enerģiju un nozīmi,
+                kas kopā veido pilnīgu spektru dzīves izpausmju.
+            </p>
+
+            <h2 class="section-title">Krāsu Enerģijas</h2>
+            <p class="section-text">
+                Katra krāsa rezonē ar konkrētām enerģijām un ietekmē mūsu emocionālo un garīgo stāvokli:
+            </p>
+
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch red">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Sarkans</div>
+                    </div>
+                    <div class="color-meaning">
+                        Dzīvības spēks, kaislība, drosme. Aktivizē enerģiju, stiprina gribu un izturību. Simbolizē Saules uguni un dzīvības sulu.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch orange">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Oranžs</div>
+                    </div>
+                    <div class="color-meaning">
+                        Radošums, prieks, dzīvesprieks. Iedvesmo jaunradei un atjaunina optimismu. Nes sevī rīta saules siltumu.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch yellow">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Dzeltens</div>
+                    </div>
+                    <div class="color-meaning">
+                        Prāts, gudrība, skaidrība. Aktivizē domāšanu un uzlabo koncentrēšanos. Simbolizē dienvidu saules spēku.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch green">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Zaļš</div>
+                    </div>
+                    <div class="color-meaning">
+                        Izaugsme, dziedināšana, harmonija. Atjauno spēkus un rada līdzsvaru. Zemes auglības un dabas atjaunošanās krāsa.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch light-blue">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Zils</div>
+                    </div>
+                    <div class="color-meaning">
+                        Miers, patiesība, komunikācija. Nomierina prātu un atvieglo izpausmi. Debess bezgalības un garīgās brīvības simbols.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch dark-blue">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Tumši zils</div>
+                    </div>
+                    <div class="color-meaning">
+                        Intuīcija, dziļums, noslēpums. Savieno ar iekšējo gudrību un apziņas dziļumiem. Nakts debess mistiskā vara.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch violet">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Violets</div>
+                    </div>
+                    <div class="color-meaning">
+                        Garīgums, transformācija, augstākā apziņa. Savieno materiālo ar garīgo. Gudrības un apskaidrības krāsa.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch pink">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Rozā</div>
+                    </div>
+                    <div class="color-meaning">
+                        Mīlestība, maigums, līdzjūtība. Atver sirdi un veicina emocionālo dziedināšanu. Beznosacījuma mīlestības izpausme.
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-card-header">
+                        <div class="color-swatch gold">
+                            <img src="../assets/star_cropped_only.svg" alt="star">
+                        </div>
+                        <div class="color-name">Zelts</div>
+                    </div>
+                    <div class="color-meaning">
+                        Labklājība, gudrība, dievišķība. Simbolizē augstāko sasniegumu un garīgo bagātību. Saules un dievību krāsa.
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p class="section-text">
+                    <strong>Svarīgi zināt:</strong> Tavs vārds, pārvērtots skaitļos, atklāj tavu iekšējo krāsu spektru.
+                    Dzimšanas datums nosaka galveno enerģiju. Kopā tie rada unikālu rakstu, kas ir tikai un vienīgi tavs.
+                </p>
+            </div>
+
+            <h2 class="section-title">Skaitļu Simbolika</h2>
+            <p class="section-text">
+                Katrs skaitlis no 1 līdz 9 nes savu enerģiju un nozīmi:
+            </p>
+            <ul>
+                <li><strong>1 - Sākums:</strong> Līdera enerģija, neatkarība, jauns ceļš</li>
+                <li><strong>2 - Līdzsvars:</strong> Harmonija, sadarbība, diplomātija</li>
+                <li><strong>3 - Radošums:</strong> Izpausme, komunikācija, prieks</li>
+                <li><strong>4 - Stabilitāte:</strong> Pamats, struktūra, darbs</li>
+                <li><strong>5 - Brīvība:</strong> Pārmaiņas, piedzīvojumi, dinamika</li>
+                <li><strong>6 - Mīlestība:</strong> Rūpes, atbildība, harmonija</li>
+                <li><strong>7 - Gudrība:</strong> Garīgums, analīze, dziļums</li>
+                <li><strong>8 - Vara:</strong> Spēks, materiālā izpausme, panākumi</li>
+                <li><strong>9 - Pilnība:</strong> Pabeigšana, altruisms, universālā mīlestība</li>
+            </ul>
+
+            <h2 class="section-title">Kā Veidojas Tavs Raksts</h2>
+            <p class="section-text">
+                Tavs personīgais raksts veidojas no divu faktoru mijiedarbības:
+            </p>
+            <ul>
+                <li><strong>Vārda enerģija:</strong> Katrs burts tiek pārvērsts skaitlī (1-9), un šie skaitļi nosaka fona krāsu un raksta sarežģītību</li>
+                <li><strong>Dzimšanas datums:</strong> Datuma cipari veido pamata enerģiju un galveno raksta krāsu</li>
+            </ul>
+            <p class="section-text">
+                Rezultātā katrs raksts kļūst par unikālu kombināciju, kas atspoguļo tavu personības būtību -
+                kā pirkstu nospiedums dvēseles pasaulē, bet ar dziļāku simbolisko un enerģētisko nozīmi.
+            </p>
+        </div>
+
+        <div class="pattern"><img src="../assets/symbols_strip.png" alt="decorative pattern"></div>
+    </div>
+</body>
+</html>
